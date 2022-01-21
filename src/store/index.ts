@@ -36,7 +36,7 @@ export const store = createStore({
       await dispatch('fetchGlobalConfig');
       const { postsPerPage } = getters['getGlobalConfig'];
       const postCount = await fetchPostCount();
-      if (page * postsPerPage > postCount) {
+      if ((page - 1) * postsPerPage + 1 > postCount) {
         throw 'Invalid Page';
       }
       const offset = (page - 1) * postsPerPage;

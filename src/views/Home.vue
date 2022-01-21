@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { NSpace } from 'naive-ui';
+import { NSpace, NPagination } from 'naive-ui';
 import { useStore } from 'vuex';
 import { key } from '@/store';
 import { computed, defineProps, Ref, ref, watch, withDefaults } from 'vue';
-import { GlobalConfig } from '@/interface/global-config.interface';
 import PostCard from '@/components/common/PostCard.vue';
+import { fetchPostCount } from '@/api/posts.service';
+import { useRouter } from 'vue-router';
 
 interface Props {
   page?: string;
@@ -15,6 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const store = useStore(key);
+const router = useRouter();
 const loading = ref(true);
 const displayError: Ref<null | string> = ref(null);
 
@@ -43,6 +45,33 @@ watch(
 const postCardListAtHome = computed(
   () => store.getters['getPostCardListAtHome']
 );
+
+const pageCount = ref(0);
+const currentPage = ref(+props.page);
+let postsPerPage = 1;
+
+store
+  .dispatch('fetchGlobalConfig')
+  .then(() => {
+    postsPerPage = store.getters['getGlobalConfig'].postsPerPage;
+  })
+  .then(() => fetchPostCount())
+  .then((cnt) => {
+    console.log('cnt=' + cnt);
+    if (cnt % postsPerPage === 0) {
+      pageCount.value = Math.floor(cnt / postsPerPage);
+    } else {
+      pageCount.value = Math.ceil(cnt / postsPerPage);
+    }
+  })
+  .catch(() => {
+    displayError.value = 'Network Error';
+  });
+
+watch(currentPage, () => {
+  console.log(currentPage.value);
+  router.push({ name: 'HomeWithPage', params: { page: currentPage.value } });
+});
 </script>
 
 <template>
@@ -54,6 +83,12 @@ const postCardListAtHome = computed(
       :key="postCard.id"
       :postCardDto="postCard"
     ></PostCard>
+    <n-card>
+      <n-pagination
+        v-model:page="currentPage"
+        :page-count="pageCount"
+      ></n-pagination>
+    </n-card>
   </n-space>
 </template>
 

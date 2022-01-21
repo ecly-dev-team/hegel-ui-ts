@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
-import { PostCardDto } from '@/dto/post-card.dto';
 import { NCard } from 'naive-ui';
+import { PostCard } from '@/interface/post-card.interface';
 
 interface Props {
-  postCardDto: PostCardDto;
+  postCardDto: PostCard;
 }
 
 const props = defineProps<Props>();

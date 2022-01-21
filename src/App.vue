@@ -1,30 +1,19 @@
+<script setup lang="ts">
+import { NLayout, NLayoutHeader, NLayoutSider, NLayoutContent } from 'naive-ui';
+import Menu from './components/menu/Menu.vue';
+import Sider from './components/sider/Sider.vue';
+</script>
+
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
-  <router-view />
+  <n-layout>
+    <n-layout-header>
+      <Menu></Menu>
+    </n-layout-header>
+    <n-layout has-sider>
+      <n-layout-sider> <Sider></Sider> </n-layout-sider>
+      <n-layout-content>
+        <router-view></router-view>
+      </n-layout-content>
+    </n-layout>
+  </n-layout>
 </template>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>

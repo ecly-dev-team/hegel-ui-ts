@@ -1,18 +1,27 @@
+<script setup lang="ts">
+import { NSpace } from 'naive-ui';
+import PostCard from '@/components/common/PostCard.vue';
+import { PostCardDto } from '@/dto/post-card.dto';
+
+const postCardDto: PostCardDto = {
+  title: 'Test',
+  abstract: 'Test Abstract',
+  id: 2,
+  tags: [{ id: 1, name: 'Vue' }],
+};
+
+let postCardList: Array<PostCardDto>;
+</script>
+
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
-  </div>
+  <n-space vertical>
+    <PostCard :postCardDto="postCardDto"></PostCard>
+  </n-space>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
-
-export default defineComponent({
-  name: "Home",
-  components: {
-    HelloWorld,
-  },
-});
-</script>
+<style scoped>
+.n-space {
+  padding: 20px;
+  background-color: blue;
+}
+</style>
